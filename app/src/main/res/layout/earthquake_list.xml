@@ -9,4 +9,12 @@
     android:drawSelectorOnTop="true"
     tools:context="com.example.android.quakereport.EarthquakeActivity">
 
+    <TextView
+        android:id="@+id/location_offset"
+        android:layout_marginLeft="16dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:text="30km S of" />
+
 </ListView>

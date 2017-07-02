@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.graphics.drawable.GradientDrawable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,13 +52,29 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         TextView Magnitude = (TextView) listItemView.findViewById(R.id.magnitude);
         // Get the version name from the current AndroidFlavor object and
         // set this text on the name TextView
-        Magnitude.setText(currentData.getmMagnitude());
+        Double magnitude = currentData.getmMagnitude();
+        Double truncatedDouble = BigDecimal.valueOf(magnitude)
+                .setScale(1, RoundingMode.HALF_UP)
+                .doubleValue();
 
+        String magnitude2 = Double.toString(truncatedDouble);
+
+        Magnitude.setText(magnitude2);
+
+
+        String primaryLocation1 = formatPrimary(currentData.getLocation());
+        String additionalLocation = formatPrimary2(currentData.getLocation());
         // Find the TextView in the list_item.xml layout with the ID version_number
-        TextView Location = (TextView) listItemView.findViewById(R.id.location);
+        TextView Location = (TextView) listItemView.findViewById(R.id.location1);
         // Get the version number from the current AndroidFlavor object and
         // set this text on the number TextView
-        Location.setText(currentData.getLocation());
+        Location.setText(primaryLocation1);
+
+        TextView Location1 = (TextView) listItemView.findViewById(R.id.location);
+        // Get the version number from the current AndroidFlavor object and
+        // set this text on the number TextView
+        Location1.setText(additionalLocation+"of");
+
 
         Date dateObject = new Date(currentData.getTimeInMilliseconds());
         // Find the TextView in the list_item.xml layout with the ID version_number
@@ -71,6 +89,14 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         String formattedTime = formatTime(dateObject);
         // Display the time of the current earthquake in that TextView
         timeView.setText(formattedTime);
+
+//        GradientDrawable magnitudeCircle = (GradientDrawable) magnitudeView.getBackground();
+//        int magnitude1Color = ContextCompat.getColor(getContext(), R.color.magnitude1);
+//        // Get the appropriate background color based on the current earthquake magnitude
+//        int magnitudeColor = getMagnitudeColor(currentEarthquake.getMagnitude());
+
+//        // Set the color on the magnitude circle
+//        magnitudeCircle.setColor(magnitudeColor);
 
 //        int testColour = ContextCompat.getColor(getContext(), colour);
 //        View textView = listItemView.findViewById(R.id.text);
@@ -93,9 +119,18 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         return timeFormat.format(dateObject);
     }
 
-//    private String primaryLocation(String setlocation) {
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("LLL dd, yyyy");
-//        return dateFormat.format(dateObject);
+    private String formatPrimary(String setlocation) {
+        String [] primaryLocation = setlocation.split("of");
+
+        return primaryLocation[1];
+    }
+
+    private String formatPrimary2(String setlocation) {
+        String [] primaryLocation = setlocation.split("of");
+
+        return primaryLocation[0];
+    }
+
 //    }
 //
 //    /**
